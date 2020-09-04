@@ -1,17 +1,17 @@
-import { numberToStringWithLeadingZero as numToStr } from './price-formatter';
+import { numberToStringWithLeadingZero as numToStr, toFarsiNumber } from './price-formatter';
 
 const getMonth = (date: Date) => date.getUTCMonth() + 1;
 const getDay = (date: Date) => date.getUTCDate();
-const getYear = (date: Date) => date.getUTCFullYear();
+/* const getYear = (date: Date) => date.getUTCFullYear(); */
 
-const dd = (date: Date) => numToStr(getDay(date), 2);
+const dd = (date: Date) => toFarsiNumber(numToStr(getDay(date), 2));
 const MMMM = (date: Date, locale: string) => new Date(date.getUTCFullYear(), date.getUTCMonth(), 1)
 	.toLocaleString(locale, { month: 'long' });
 const MMM = (date: Date, locale: string) => new Date(date.getUTCFullYear(), date.getUTCMonth(), 1)
 	.toLocaleString(locale, { month: 'short' });
-const MM = (date: Date) => numToStr(getMonth(date), 2);
-const yy = (date: Date, locale: string) => locale === 'fa-IR' ? date.toLocaleDateString(locale).split('/')[0].slice(2,4) : numToStr(getYear(date) % 100, 2);
-const yyyy = (date: Date, locale: string) => locale === 'fa-IR' ? date.toLocaleDateString(locale).split('/')[0] : numToStr(getYear(date), 4);
+const MM = (date: Date) => toFarsiNumber(numToStr(getMonth(date), 2));
+const yy = (date: Date, locale: string) => date.toLocaleDateString(locale).split('/')[0].slice(2,4);
+const yyyy = (date: Date, locale: string) => date.toLocaleDateString(locale).split('/')[0];
 
 export function formatDate(date: Date, format: string, locale: string): string {
 	return format

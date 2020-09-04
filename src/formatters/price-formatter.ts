@@ -7,6 +7,16 @@ const formatterOptions = {
 	decimalSignFractional: '\'',
 };
 
+export function toFarsiNumber(n: string) {
+  const map = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+
+  return n
+    .toString()
+    .split('')
+    .map(x => x >= '0' && x <= '9' ? map[+x] : x)
+    .join('');
+}
+
 // length mustn't be more then 16
 export function numberToStringWithLeadingZero(value: number, length: number): string {
 	if (!isNumber(value)) {
@@ -26,7 +36,8 @@ export function numberToStringWithLeadingZero(value: number, length: number): st
 	}
 
 	const dummyString = '0000000000000000';
-	return (dummyString + value.toString()).slice(-length);
+	const result = (dummyString + value.toString()).slice(-length);
+	return result;
 }
 
 export class PriceFormatter implements IFormatter {
@@ -70,7 +81,7 @@ export class PriceFormatter implements IFormatter {
 			return sign + this._formatAsFractional(price);
 		}
 
-		return sign + this._formatAsDecimal(price);
+		return toFarsiNumber(sign + this._formatAsDecimal(price));
 	}
 
 	private _calculateDecimal(): void {
